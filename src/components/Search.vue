@@ -1,0 +1,63 @@
+<template>
+  <el-autocomplete
+    v-model="state"
+    :fetch-suggestions="querySearchAsync"
+    placeholder="Please input"
+    @select="handleSelect"
+    :suffix-icon="Search"
+  />
+ 
+    
+</template>
+
+<script lang="ts" setup>
+import { ref, onMounted } from 'vue'
+import { Search } from '@element-plus/icons-vue'
+const state = ref('')
+
+interface LinkItem {
+  value: string
+  link: string
+}
+
+const links = ref<LinkItem[]>([])
+
+const loadAll = () => {
+  return [
+    { value: 'vue', link: 'https://github.com/vuejs/vue' },
+    { value: 'element', link: 'https://github.com/ElemeFE/element' },
+    { value: 'cooking', link: 'https://github.com/ElemeFE/cooking' },
+    { value: 'mint-ui', link: 'https://github.com/ElemeFE/mint-ui' },
+    { value: 'vuex', link: 'https://github.com/vuejs/vuex' },
+    { value: 'vue-router', link: 'https://github.com/vuejs/vue-router' },
+    { value: '我在吃饭', link: 'https://github.com/babel/babel' },
+  ]
+}
+
+let timeout: NodeJS.Timeout
+const querySearchAsync = (queryString: string, cb: (arg: any) => void) => {
+  const results = queryString
+    ? links.value.filter(createFilter(queryString))
+    : links.value
+
+  clearTimeout(timeout)
+  timeout = setTimeout(() => {
+    cb(results)
+  }, 1500 * Math.random())
+}
+const createFilter = (queryString: string) => {
+  return (restaurant: LinkItem) => {
+    return (
+      restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+    )
+  }
+}
+
+const handleSelect = (item: LinkItem) => {
+  console.log(item)
+}
+
+onMounted(() => {
+  links.value = loadAll()
+})
+</script>
