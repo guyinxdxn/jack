@@ -4,7 +4,7 @@
 <Carousel/>
 <VideoView/>
 <Activity/>
-<div class="rr"  :style="{'--a' : a}" >这里是首页</div>
+<div class="rr"  :style="{'--a' : a}" >这里是首页啊</div>
 </template>
 <script vars={red}>
 import Header from './header/Header.vue'
